@@ -33,7 +33,7 @@ class GraphPrinter extends ResultPrinter {
 		self::NODELABEL_DISPLAYTITLE,
 	];
 	/** @const string[] PAGETYPES SMW types that represent SMW pages and should always be displayed as nodes. */
-	private const PAGETYPES = [ '_wpg', '_wpp', '_wps', '_wpu', '__sup', '__sin', '__suc', '__con' ];
+	private const PAGETYPES = [ '_wpg', '_wpp', '_wps', '_wpu', '__sup', '__sin', '__suc', '__con', '_txt' ];
 
 	public static $NODE_SHAPES = [
 		'box',
@@ -207,11 +207,11 @@ class GraphPrinter extends ResultPrinter {
 			// Loop through all values of a multivalue field.
 			while ( ( /* SMWWikiPageValue */ $object = $result_array->getNextDataValue() ) !== false ) {
 				if ( $show_as_edge ) {
-					if ( !$node && !$object->getProperty() ) {
+					if ( !$node ) {
 						// The graph node for the current record has not been created,
 						// and this is the printout '?'. So, create it now.
 						$node = new GraphNode( $object->getShortWikiText() );
-						$node->setLabel( $object->getPreferredCaption() ?: $object->getText() );
+						$node->setLabel( $object->getPreferredCaption() ?: $object->getShortHTMLText() );
 					} else {
 						// Remember a parent node to add after the row is processed.
 						$parents[] = [

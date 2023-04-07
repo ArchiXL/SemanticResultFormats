@@ -119,8 +119,7 @@ class GraphFormatter {
 				$nodeTooltip = $nodeLabel ?: $node->getID();
 				// GraphViz is not working for version >= 1.33, so we need to use the Diagrams extension
 				// and formatting is a little different from the GraphViz extension
-				if ( version_compare( $wgVersion, '1.33', '>=' ) &&
-					\ExtensionRegistry::getInstance()->isLoaded( 'Diagrams' ) ) {
+				if ( version_compare( $wgVersion, '1.33', '>=' ) && \ExtensionRegistry::getInstance()->isLoaded( 'Diagrams' ) ) {
 					$nodeTooltip = str_replace( '<br />', '', $nodeTooltip );
 				}
 				// Label in HTML form enclosed with <>.
@@ -141,10 +140,16 @@ class GraphFormatter {
 							}, $fields ) ) . "\n</table>\n>";
 				$nodeLinkURL = null; // the value at the top is already hyperlinked.
 			} else {
+
+				if ( version_compare( $wgVersion, '1.33', '>=' ) && \ExtensionRegistry::getInstance()->isLoaded( 'Diagrams' ) ) {
+					$nodeLabel = str_replace( '<br />', PHP_EOL, $nodeLabel );
+				}
+
 				if ( $nodeLabel ) {
 					// Label, if any, is enclosed with "".
 					$nodeLabel = '"' . htmlspecialchars( $nodeLabel ) . '"';
 				}
+
 				$nodeTooltip = null;
 			}
 
